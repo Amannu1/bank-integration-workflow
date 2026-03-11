@@ -1,6 +1,9 @@
 package com.luizercole.bankworkflow.resources;
 
+import com.luizercole.bankworkflow.dto.BankDTO;
 import com.luizercole.bankworkflow.entities.Bank;
+import com.luizercole.bankworkflow.services.BankService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,11 +16,12 @@ import java.util.List;
 @RequestMapping(value = "/banks")
 public class BankResource {
 
+    @Autowired
+    private BankService bankService;
+
     @GetMapping
-    public ResponseEntity<List<Bank>> findAll(){
-        List<Bank> list = new ArrayList<>();
-        list.add(new Bank(1L, "Itaú", true));
-        list.add(new Bank(2L, "Sicredi", false));
+    public ResponseEntity<List<BankDTO>> findAll(){
+        List<BankDTO> list = bankService.findAll();
         return ResponseEntity.ok().body(list);
     }
 }
