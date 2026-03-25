@@ -30,4 +30,11 @@ public class BankService {
         Bank entity = obj.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
         return new BankDTO(entity);
     }
+
+    public BankDTO createBank(BankDTO bankDTO){
+        Bank entity = new Bank();
+        entity.setName(bankDTO.getName());
+        bankRepository.save(entity);
+        return new BankDTO(entity);
+    }
 }
