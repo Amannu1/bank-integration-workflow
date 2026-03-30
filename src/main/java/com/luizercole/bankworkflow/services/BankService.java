@@ -25,16 +25,31 @@ public class BankService {
         return list.stream().map(x -> new BankDTO(x)).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public BankDTO findById(Long id){
         Optional<Bank> obj = bankRepository.findById(id);
         Bank entity = obj.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
         return new BankDTO(entity);
     }
 
+    @Transactional
     public BankDTO createBank(BankDTO bankDTO){
         Bank entity = new Bank();
         entity.setName(bankDTO.getName());
         bankRepository.save(entity);
         return new BankDTO(entity);
+    }
+
+    @Transactional
+    public BankDTO updateBank(Long id, BankDTO bankDTO){
+        try {
+            Bank entity = bankRepository.getReferenceById(id);
+            entity.setName(bankDTO.getName());
+            entity.setActive(bankDTO.isActive());
+            bankRepository.save(entity);
+            return new BankDTO(entity);
+        }catch(EntityNotFoundException e){
+            throw new EntityNotFoundException("Id not found: " + id);
+        }
     }
 }

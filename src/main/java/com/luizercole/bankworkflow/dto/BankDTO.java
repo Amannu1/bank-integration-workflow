@@ -8,10 +8,12 @@ public class BankDTO implements Serializable {
 
     private Long id;
     private String name;
+    private boolean active;
 
-    public BankDTO(Long id, String name) {
+    public BankDTO(Long id, String name, boolean active) {
         this.id = id;
         this.name = name;
+        this.active = active;
     }
 
     public BankDTO(){
@@ -21,6 +23,7 @@ public class BankDTO implements Serializable {
     public BankDTO(Bank entity){
         this.id = entity.getId();
         this.name = entity.getName();
+        this.active = entity.isActive();
 
     }
 
@@ -39,4 +42,8 @@ public class BankDTO implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+    public boolean isActive(){ return active;}
+
+    public void setActive(boolean active){this.active = active;}
 }

@@ -39,4 +39,10 @@ public class BankResource {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(bankDTO.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<BankDTO> updateBank(@PathVariable Long id, @RequestBody BankDTO bankDTO){
+        bankDTO = bankService.updateBank(id, bankDTO);
+        return ResponseEntity.ok().body(bankDTO);
+    }
 }
