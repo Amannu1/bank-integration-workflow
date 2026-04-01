@@ -1,7 +1,6 @@
 package com.luizercole.bankworkflow.resources;
 
 import com.luizercole.bankworkflow.dto.BankDTO;
-import com.luizercole.bankworkflow.entities.Bank;
 import com.luizercole.bankworkflow.services.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -44,5 +43,11 @@ public class BankResource {
     public ResponseEntity<BankDTO> updateBank(@PathVariable Long id, @RequestBody BankDTO bankDTO){
         bankDTO = bankService.updateBank(id, bankDTO);
         return ResponseEntity.ok().body(bankDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<BankDTO> deleteBank(@PathVariable Long id){
+        bankService.deleteBank(id);
+        return ResponseEntity.noContent().build();
     }
 }

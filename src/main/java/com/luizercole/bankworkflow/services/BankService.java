@@ -3,9 +3,12 @@ package com.luizercole.bankworkflow.services;
 import com.luizercole.bankworkflow.dto.BankDTO;
 import com.luizercole.bankworkflow.entities.Bank;
 import com.luizercole.bankworkflow.repositories.BankRepository;
+import com.luizercole.bankworkflow.services.exceptions.DatabaseException;
 import com.luizercole.bankworkflow.services.exceptions.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -50,6 +53,20 @@ public class BankService {
             return new BankDTO(entity);
         }catch(EntityNotFoundException e){
             throw new EntityNotFoundException("Id not found: " + id);
+        }
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void deleteBank(Long id){
+        if(!bankRepository.existsById(id)){
+            throw new EntityNotFoundException("Entity not found.");
+        }
+        try {
+
+            bankRepository.deleteById(id);
+
+        }catch(DataIntegrityViolationException e){
+            throw new DatabaseException("Database error.");
         }
     }
 }
