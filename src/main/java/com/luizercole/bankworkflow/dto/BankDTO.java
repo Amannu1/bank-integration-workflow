@@ -1,7 +1,9 @@
 package com.luizercole.bankworkflow.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.luizercole.bankworkflow.entities.Bank;
 import java.io.Serializable;
+import java.time.Instant;
 
 public class BankDTO implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -9,6 +11,12 @@ public class BankDTO implements Serializable {
     private Long id;
     private String name;
     private boolean active;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Instant createdAt;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Instant updatedAt;
 
     public BankDTO(Long id, String name, boolean active) {
         this.id = id;
@@ -24,7 +32,8 @@ public class BankDTO implements Serializable {
         this.id = entity.getId();
         this.name = entity.getName();
         this.active = entity.isActive();
-
+        this.createdAt = entity.getCreatedAt();
+        this.updatedAt = entity.getUpdatedAt();
     }
 
     public Long getId() {
@@ -46,4 +55,12 @@ public class BankDTO implements Serializable {
     public boolean isActive(){ return active;}
 
     public void setActive(boolean active){this.active = active;}
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
+    }
 }
