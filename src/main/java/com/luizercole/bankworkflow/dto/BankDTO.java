@@ -2,6 +2,8 @@ package com.luizercole.bankworkflow.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.luizercole.bankworkflow.entities.Bank;
+import jakarta.validation.constraints.NotBlank;
+
 import java.io.Serializable;
 import java.time.Instant;
 
@@ -9,7 +11,10 @@ public class BankDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
+
+    @NotBlank(message = "Required field.")
     private String name;
+
     private boolean active;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

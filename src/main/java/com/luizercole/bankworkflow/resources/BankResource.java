@@ -2,6 +2,7 @@ package com.luizercole.bankworkflow.resources;
 
 import com.luizercole.bankworkflow.dto.BankDTO;
 import com.luizercole.bankworkflow.services.BankService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,9 +10,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
-
-import static org.springframework.web.servlet.function.RequestPredicates.path;
 
 @RestController
 @RequestMapping(value = "/banks")
@@ -33,14 +31,14 @@ public class BankResource {
     }
 
     @PostMapping
-    public ResponseEntity<BankDTO> createBank(@RequestBody BankDTO bankDTO){
+    public ResponseEntity<BankDTO> createBank(@Valid @RequestBody BankDTO bankDTO){
         bankDTO = bankService.createBank(bankDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(bankDTO.getId()).toUri();
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(bankDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BankDTO> updateBank(@PathVariable Long id, @RequestBody BankDTO bankDTO){
+    public ResponseEntity<BankDTO> updateBank(@PathVariable Long id, @RequestBody @Valid BankDTO bankDTO){
         bankDTO = bankService.updateBank(id, bankDTO);
         return ResponseEntity.ok().body(bankDTO);
     }
