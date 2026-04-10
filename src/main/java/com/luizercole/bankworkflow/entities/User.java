@@ -14,6 +14,7 @@ public class User {
 
     private String name;
     private String role;
+    private String password;
     private boolean active;
 
     @Column (columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
@@ -26,11 +27,12 @@ public class User {
 
     }
 
-    public User(Long id, String name, String role, boolean active) {
+    public User(Long id, String name, String role, boolean active, String password) {
         this.id = id;
         this.name = name;
         this.role = role;
         this.active = active;
+        this.password = password;
     }
 
     public Long getId() {
@@ -51,6 +53,14 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(){
+        this.password = password;
     }
 
     public boolean isActive() {
