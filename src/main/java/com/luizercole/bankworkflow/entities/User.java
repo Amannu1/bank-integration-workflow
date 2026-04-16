@@ -2,7 +2,9 @@ package com.luizercole.bankworkflow.entities;
 
 import jakarta.persistence.*;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_user")
@@ -13,9 +15,15 @@ public class User {
     private Long id;
 
     private String name;
-    private String role;
     private String password;
     private boolean active;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "tb_user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
     @Column (columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant createdAt;
@@ -27,10 +35,9 @@ public class User {
 
     }
 
-    public User(Long id, String name, String role, boolean active, String password) {
+    public User(Long id, String name, boolean active, String password) {
         this.id = id;
         this.name = name;
-        this.role = role;
         this.active = active;
         this.password = password;
     }
@@ -47,12 +54,8 @@ public class User {
         this.name = name;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
     public String getPassword() {
