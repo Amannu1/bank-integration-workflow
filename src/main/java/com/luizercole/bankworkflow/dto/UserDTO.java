@@ -1,6 +1,7 @@
 package com.luizercole.bankworkflow.dto;
 
 import com.luizercole.bankworkflow.entities.User;
+import jakarta.validation.constraints.NotBlank;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -12,6 +13,8 @@ public class UserDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
+
+    @NotBlank(message = "Required field.")
     private String name;
     private boolean active;
 
