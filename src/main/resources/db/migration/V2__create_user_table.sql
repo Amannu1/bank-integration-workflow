@@ -1,6 +1,6 @@
 create table TB_USER(
     id BIGINT primary key auto_increment,
-    name VARCHAR(100) NOT NULL,
+    name VARCHAR(100) NOT NULL UNIQUE,
     active boolean not null default false,
     password VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
