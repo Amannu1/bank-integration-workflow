@@ -2,6 +2,7 @@ package com.luizercole.bankworkflow.resources;
 
 import com.luizercole.bankworkflow.dto.UserDTO;
 import com.luizercole.bankworkflow.dto.UserInsertDTO;
+import com.luizercole.bankworkflow.dto.UserUpdateDTO;
 import com.luizercole.bankworkflow.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,11 @@ public class UserResource {
         UserDTO user = userService.createUser(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).body(user);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserUpdateDTO dto, @PathVariable Long id){
+        UserDTO user = userService.updateUser(id, dto);
+        return ResponseEntity.ok().body(user);
     }
 }

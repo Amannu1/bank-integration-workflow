@@ -3,11 +3,13 @@ package com.luizercole.bankworkflow.services;
 import com.luizercole.bankworkflow.dto.RoleDTO;
 import com.luizercole.bankworkflow.dto.UserDTO;
 import com.luizercole.bankworkflow.dto.UserInsertDTO;
+import com.luizercole.bankworkflow.dto.UserUpdateDTO;
 import com.luizercole.bankworkflow.entities.Role;
 import com.luizercole.bankworkflow.entities.User;
 import com.luizercole.bankworkflow.repositories.RoleRepository;
 import com.luizercole.bankworkflow.repositories.UserRepository;
 import com.luizercole.bankworkflow.services.exceptions.EntityNotFoundException;
+import com.luizercole.bankworkflow.services.exceptions.ResourceNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,7 @@ public class UserService {
         return new UserDTO(entity);
     }
 
+    @Transactional
     public UserDTO createUser(UserInsertDTO dto){
         User entity = new User();
         copyDtoToEntity(dto, entity);
@@ -51,6 +54,18 @@ public class UserService {
 
         entity = userRepository.save(entity);
         return new UserDTO(entity);
+    }
+
+    @Transactional
+    public UserDTO updateUser(Long id, UserUpdateDTO dto){
+        try{
+            User entity = userRepository.getReferenceById(id);
+            copyDtoToEntity(dto, entity);
+            entity = userRepository.save(entity);
+            return new UserDTO(entity);
+        }catch(EntityNotFoundException e){
+            throw new ResourceNotFoundException("Id not found: " + id);
+        }
     }
 
     private void copyDtoToEntity(UserDTO dto, User entity){
