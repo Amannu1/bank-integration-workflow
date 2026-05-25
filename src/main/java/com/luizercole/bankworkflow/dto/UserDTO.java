@@ -7,8 +7,6 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.apache.commons.lang3.BooleanUtils.forEach;
-
 public class UserDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 

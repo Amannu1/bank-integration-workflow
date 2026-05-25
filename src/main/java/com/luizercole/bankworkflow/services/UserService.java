@@ -8,9 +8,12 @@ import com.luizercole.bankworkflow.entities.Role;
 import com.luizercole.bankworkflow.entities.User;
 import com.luizercole.bankworkflow.repositories.RoleRepository;
 import com.luizercole.bankworkflow.repositories.UserRepository;
+import com.luizercole.bankworkflow.services.exceptions.DatabaseException;
 import com.luizercole.bankworkflow.services.exceptions.EntityNotFoundException;
 import com.luizercole.bankworkflow.services.exceptions.ResourceNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,18 +61,27 @@ public class UserService {
 
     @Transactional
     public UserDTO updateUser(Long id, UserUpdateDTO dto){
-        try{
-            User entity = userRepository.getReferenceById(id);
+            User entity = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Id not found: " + id));
             copyDtoToEntity(dto, entity);
             entity = userRepository.save(entity);
             return new UserDTO(entity);
-        }catch(EntityNotFoundException e){
-            throw new ResourceNotFoundException("Id not found: " + id);
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void deleteUser(Long id){
+        if (!userRepository.existsById(id)){
+            throw new EntityNotFoundException("Entity not found.");
+        }
+        try{
+            userRepository.deleteById(id);
+        }catch(DataIntegrityViolationException e){
+            throw new DatabaseException("Database error.");
         }
     }
 
     private void copyDtoToEntity(UserDTO dto, User entity){
         entity.setName(dto.getName());
+        entity.setActive(dto.isActive());
         entity.getRoles().clear();
         for(RoleDTO roleDto : dto.getRoles()){
             Role role = roleRepository.findById(roleDto.getId()).orElseThrow(() -> new EntityNotFoundException("Role not found."));
