@@ -13,7 +13,7 @@ public class UserDTO implements Serializable {
     private Long id;
 
     @NotBlank(message = "Required field.")
-    private String name;
+    private String username;
     private boolean active;
 
     private Set<RoleDTO> roles = new HashSet<>();
@@ -22,15 +22,15 @@ public class UserDTO implements Serializable {
 
     }
 
-    public UserDTO(Long id, String name, boolean active) {
+    public UserDTO(Long id, String username, boolean active) {
         this.id = id;
-        this.name = name;
+        this.username = username;
         this.active = active;
     }
 
     public UserDTO(User entity){
         id = entity.getId();
-        name = entity.getName();
+        username = entity.getUsername();
         active = entity.isActive();
         entity.getRoles().forEach(role -> this.roles.add(new RoleDTO(role)));
     }
@@ -39,12 +39,12 @@ public class UserDTO implements Serializable {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public boolean isActive() {

@@ -10,7 +10,6 @@ import com.luizercole.bankworkflow.repositories.RoleRepository;
 import com.luizercole.bankworkflow.repositories.UserRepository;
 import com.luizercole.bankworkflow.services.exceptions.DatabaseException;
 import com.luizercole.bankworkflow.services.exceptions.EntityNotFoundException;
-import com.luizercole.bankworkflow.services.exceptions.ResourceNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Propagation;
@@ -80,7 +79,7 @@ public class UserService {
     }
 
     private void copyDtoToEntity(UserDTO dto, User entity){
-        entity.setName(dto.getName());
+        entity.setUsername(dto.getUsername());
         entity.setActive(dto.isActive());
         entity.getRoles().clear();
         for(RoleDTO roleDto : dto.getRoles()){
