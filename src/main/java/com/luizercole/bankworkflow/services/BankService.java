@@ -5,6 +5,7 @@ import com.luizercole.bankworkflow.entities.Bank;
 import com.luizercole.bankworkflow.repositories.BankRepository;
 import com.luizercole.bankworkflow.services.exceptions.DatabaseException;
 import com.luizercole.bankworkflow.services.exceptions.EntityNotFoundException;
+import com.luizercole.bankworkflow.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class BankService {
     @Transactional(readOnly = true)
     public BankDTO findById(Long id){
         Optional<Bank> obj = bankRepository.findById(id);
-        Bank entity = obj.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+        Bank entity = obj.orElseThrow(() -> new ResourceNotFoundException("Resource not found"));
         return new BankDTO(entity);
     }
 
@@ -51,15 +52,15 @@ public class BankService {
             entity.setActive(bankDTO.isActive());
             bankRepository.save(entity);
             return new BankDTO(entity);
-        }catch(EntityNotFoundException e){
-            throw new EntityNotFoundException("Id not found: " + id);
+        }catch(jakarta.persistence.EntityNotFoundException e){
+            throw new ResourceNotFoundException("Id not found: " + id);
         }
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
     public void deleteBank(Long id){
         if(!bankRepository.existsById(id)){
-            throw new EntityNotFoundException("Entity not found.");
+            throw new ResourceNotFoundException("Resource not found.");
         }
         try {
 
