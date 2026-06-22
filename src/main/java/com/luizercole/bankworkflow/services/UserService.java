@@ -6,12 +6,16 @@ import com.luizercole.bankworkflow.dto.UserInsertDTO;
 import com.luizercole.bankworkflow.dto.UserUpdateDTO;
 import com.luizercole.bankworkflow.entities.Role;
 import com.luizercole.bankworkflow.entities.User;
+import com.luizercole.bankworkflow.projections.UserDetailsProjection;
 import com.luizercole.bankworkflow.repositories.RoleRepository;
 import com.luizercole.bankworkflow.repositories.UserRepository;
 import com.luizercole.bankworkflow.services.exceptions.DatabaseException;
 import com.luizercole.bankworkflow.services.exceptions.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,16 +26,33 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        List<UserDetailsProjection> result = userRepository.searchUserAndRolesByUsername(username);
+        if(result.isEmpty()){
+            throw new UsernameNotFoundException("User not found");
+        }
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(result.get(0).getPassword());
+        for(UserDetailsProjection projection : result){
+            user.addRole(new Role(projection.getRoleId(), projection.getAuthority()));
+        }
+
+        return user;
+    }
 
     @Transactional(readOnly = true)
     public List<UserDTO> findAll(){
@@ -52,7 +73,7 @@ public class UserService {
         User entity = new User();
         copyDtoToEntity(dto, entity);
 
-        entity.setPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
+        entity.setPassword(passwordEncoder.encode(dto.getPassword()));
 
         entity = userRepository.save(entity);
         return new UserDTO(entity);
