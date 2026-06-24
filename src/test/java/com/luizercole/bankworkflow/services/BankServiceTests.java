@@ -68,10 +68,10 @@ public class BankServiceTests {
     }
 
     @Test
-    public void findByIdShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist(){
+    public void findByIdShouldThrowEntityNotFoundExceptionWhenIdDoesNotExist(){
         Mockito.when(bankRepository.findById(nonExistingId)).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+        Assertions.assertThrows(EntityNotFoundException.class, () -> {
             bankService.findById(nonExistingId);
         });
     }

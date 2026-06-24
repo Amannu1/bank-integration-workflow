@@ -2,6 +2,7 @@ package com.luizercole.bankworkflow.services;
 
 import com.luizercole.bankworkflow.dto.BankDTO;
 import com.luizercole.bankworkflow.repositories.BankRepository;
+import com.luizercole.bankworkflow.services.exceptions.EntityNotFoundException;
 import com.luizercole.bankworkflow.services.exceptions.ResourceNotFoundException;
 import com.luizercole.bankworkflow.tests.Factory;
 import org.junit.jupiter.api.Assertions;
@@ -53,9 +54,9 @@ public class BankServiceIT {
     }
 
     @Test
-    public void findByIdShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
+    public void findByIdShouldThrowEntityNotFoundExceptionWhenIdDoesNotExist() {
 
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+        Assertions.assertThrows(EntityNotFoundException.class, () -> {
             bankService.findById(nonExistingId);
         });
     }

@@ -32,7 +32,7 @@ public class BankService {
     @Transactional(readOnly = true)
     public BankDTO findById(Long id){
         Optional<Bank> obj = bankRepository.findById(id);
-        Bank entity = obj.orElseThrow(() -> new ResourceNotFoundException("Resource not found"));
+        Bank entity = obj.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
         return new BankDTO(entity);
     }
 
@@ -40,6 +40,7 @@ public class BankService {
     public BankDTO createBank(BankDTO bankDTO){
         Bank entity = new Bank();
         entity.setName(bankDTO.getName());
+        entity.setActive(bankDTO.isActive());
         bankRepository.save(entity);
         return new BankDTO(entity);
     }

@@ -5,7 +5,6 @@ import com.luizercole.bankworkflow.dto.BankDTO;
 import com.luizercole.bankworkflow.services.BankService;
 import com.luizercole.bankworkflow.services.exceptions.DatabaseException;
 import com.luizercole.bankworkflow.services.exceptions.EntityNotFoundException;
-import com.luizercole.bankworkflow.services.exceptions.ResourceNotFoundException;
 import com.luizercole.bankworkflow.tests.Factory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +12,6 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -160,6 +158,5 @@ public class BankResourceTests {
                 .accept(MediaType.APPLICATION_JSON));
 
         resultActions.andExpect(status().isBadRequest());
-
     }
 }
