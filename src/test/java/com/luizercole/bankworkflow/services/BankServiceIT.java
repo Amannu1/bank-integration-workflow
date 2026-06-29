@@ -72,11 +72,11 @@ public class BankServiceIT {
     }
 
     @Test
-    public void updateShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
+    public void updateShouldThrowEntityNotFoundExceptionWhenIdDoesNotExist() {
 
         BankDTO bankDTO = Factory.createBankDTO();
 
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+        Assertions.assertThrows(EntityNotFoundException.class, () -> {
             bankService.updateBank(nonExistingId, bankDTO);
         });
     }
@@ -100,9 +100,9 @@ public class BankServiceIT {
     }
 
     @Test
-    public void deleteShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
+    public void deleteShouldThrowEntityNotFoundExceptionWhenIdDoesNotExist() {
 
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+        Assertions.assertThrows(EntityNotFoundException.class, () -> {
             bankService.deleteBank(nonExistingId);
         });
     }

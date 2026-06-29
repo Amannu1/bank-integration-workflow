@@ -5,7 +5,6 @@ import com.luizercole.bankworkflow.entities.Bank;
 import com.luizercole.bankworkflow.repositories.BankRepository;
 import com.luizercole.bankworkflow.services.exceptions.DatabaseException;
 import com.luizercole.bankworkflow.services.exceptions.EntityNotFoundException;
-import com.luizercole.bankworkflow.services.exceptions.ResourceNotFoundException;
 import com.luizercole.bankworkflow.tests.Factory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -91,10 +90,10 @@ public class BankServiceTests {
     }
 
     @Test
-    public void updateShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist(){
+    public void updateShouldThrowEntityNotFoundExceptionWhenIdDoesNotExist(){
         Mockito.when(bankRepository.getReferenceById(nonExistingId)).thenThrow(jakarta.persistence.EntityNotFoundException.class);
 
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+        Assertions.assertThrows(EntityNotFoundException.class, () -> {
             bankService.updateBank(nonExistingId, bankDTO);
         });
     }
@@ -121,10 +120,10 @@ public class BankServiceTests {
     }
 
     @Test
-    public void deleteShouldThrowResourceNotFoundExceptionWhenIdDoesNotExists(){
+    public void deleteShouldThrowEntityNotFoundExceptionWhenIdDoesNotExists(){
         Mockito.when(bankRepository.existsById(nonExistingId)).thenReturn(false);
 
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+        Assertions.assertThrows(EntityNotFoundException.class, () -> {
             bankService.deleteBank(nonExistingId);
         });
     }
