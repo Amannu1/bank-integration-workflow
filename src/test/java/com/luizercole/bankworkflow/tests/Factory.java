@@ -13,8 +13,14 @@ public class Factory {
     }
 
     public static User createUser(){
-        User user = new User(1L, "Alex", true, "123456");
+        User user = new User(1L, "Sophia", true, "123456");
         return user;
+    }
+
+    public static UserDTO createUserDTO(){
+        User user = createUser();
+        user.addRole(createRole());
+        return new UserDTO(user);
     }
 
     public static Role createRole(){
@@ -24,7 +30,7 @@ public class Factory {
 
     public static UserInsertDTO createUserInsertDTO(){
         UserInsertDTO dto = new UserInsertDTO();
-        dto.setUsername("Alex");
+        dto.setUsername("Sophia123");
         dto.setActive(true);
         dto.setPassword("123456");
         dto.getRoles().add(new RoleDTO(1L, "ROLE_OPERATOR"));
@@ -33,7 +39,7 @@ public class Factory {
 
     public static UserUpdateDTO userUpdateDTO(){
         UserUpdateDTO dto = new UserUpdateDTO();
-        dto.setUsername("Alex123");
+        dto.setUsername("Sophia123");
         dto.setActive(true);
         dto.getRoles().add(new RoleDTO(1L, "ROLE_OPERATOR"));
         return dto;
