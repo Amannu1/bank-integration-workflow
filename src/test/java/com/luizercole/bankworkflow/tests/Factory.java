@@ -30,7 +30,7 @@ public class Factory {
 
     public static UserInsertDTO createUserInsertDTO(){
         UserInsertDTO dto = new UserInsertDTO();
-        dto.setUsername("Sophia123");
+        dto.setUsername("Sophia");
         dto.setActive(true);
         dto.setPassword("123456");
         dto.getRoles().add(new RoleDTO(1L, "ROLE_OPERATOR"));
