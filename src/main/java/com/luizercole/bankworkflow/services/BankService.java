@@ -39,6 +39,7 @@ public class BankService {
     public BankDTO createBank(BankDTO bankDTO){
         Bank entity = new Bank();
         entity.setName(bankDTO.getName());
+        entity.setActive(bankDTO.isActive());
         bankRepository.save(entity);
         return new BankDTO(entity);
     }
@@ -51,7 +52,7 @@ public class BankService {
             entity.setActive(bankDTO.isActive());
             bankRepository.save(entity);
             return new BankDTO(entity);
-        }catch(EntityNotFoundException e){
+        }catch(jakarta.persistence.EntityNotFoundException e){
             throw new EntityNotFoundException("Id not found: " + id);
         }
     }

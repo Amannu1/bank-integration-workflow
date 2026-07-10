@@ -7,6 +7,7 @@ import com.luizercole.bankworkflow.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -20,12 +21,14 @@ public class UserResource {
     @Autowired
     private UserService userService;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
     public ResponseEntity<List<UserDTO>> findAll(){
         List<UserDTO> list = userService.findAll();
         return ResponseEntity.ok().body(list);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> findById(@PathVariable Long id){
         UserDTO dto = userService.findById(id);
@@ -33,6 +36,7 @@ public class UserResource {
 
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserInsertDTO dto){
         UserDTO user = userService.createUser(dto);
@@ -40,12 +44,14 @@ public class UserResource {
         return ResponseEntity.created(uri).body(user);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserUpdateDTO dto, @PathVariable Long id){
         UserDTO user = userService.updateUser(id, dto);
         return ResponseEntity.ok().body(user);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<UserDTO> deleteUser(@PathVariable Long id){
         userService.deleteUser(id);

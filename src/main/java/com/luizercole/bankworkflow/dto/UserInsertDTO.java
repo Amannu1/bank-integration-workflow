@@ -10,7 +10,7 @@ public class UserInsertDTO extends UserDTO{
     @NotBlank(message = "Required field.")
     private String password;
 
-    UserInsertDTO(){
+    public UserInsertDTO(){
         super();
     }
 
