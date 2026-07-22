@@ -1,10 +1,7 @@
 package com.luizercole.bankworkflow.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.luizercole.bankworkflow.entities.Bank;
 import com.luizercole.bankworkflow.entities.BankIntegrationTemplate;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 
 import java.io.Serializable;
@@ -20,6 +17,7 @@ public class BankIntegrationTemplateDTO implements Serializable {
 
     private Long bankId;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String bankName;
 
     @NotBlank(message = "Required field.")
@@ -76,6 +74,10 @@ public class BankIntegrationTemplateDTO implements Serializable {
 
     public Long getBankId() {
         return bankId;
+    }
+
+    public void setBankId(Long bankId){
+        this.bankId = bankId;
     }
 
     public String getBankName() {

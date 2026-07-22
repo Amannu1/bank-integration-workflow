@@ -11,3 +11,6 @@ CREATE TABLE tb_bank_integration_template (
     CONSTRAINT fk_bank_integration_template_bank
         FOREIGN KEY (bank_id) REFERENCES tb_bank(id)
 );
+
+INSERT INTO tb_bank_integration_template values (1, 'TEMP ITAU', 1, '0.1', 'EM ANDAMENTO', true, now(), now());
+INSERT INTO tb_bank_integration_template values (2, 'TEMP SICREDI', 2, '0.2', 'CONCLUIDO', false, now(), now());
