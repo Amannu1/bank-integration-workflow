@@ -1,7 +1,6 @@
 package com.luizercole.bankworkflow.resources;
 
 import com.luizercole.bankworkflow.dto.BankIntegrationTemplateDTO;
-import com.luizercole.bankworkflow.entities.BankIntegrationTemplate;
 import com.luizercole.bankworkflow.services.BankIntegrationTemplateService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +36,17 @@ public class BankIntegrationTemplateResource {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(bankIntegrationTemplateDTO.getId()).toUri();
         return ResponseEntity.created(uri).body(bankIntegrationTemplateDTO);
 
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<BankIntegrationTemplateDTO> updateBankIntegrationTemplate(@PathVariable Long id, @RequestBody @Valid BankIntegrationTemplateDTO bankIntegrationTemplateDTO){
+        bankIntegrationTemplateDTO = bankIntegrationTemplateService.updateBankIntegrationTemplate(id, bankIntegrationTemplateDTO);
+        return ResponseEntity.ok().body(bankIntegrationTemplateDTO);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<BankIntegrationTemplateDTO> deleteBankIntegrationTemplate(@PathVariable Long id){
+        bankIntegrationTemplateService.deleteBankIntegrationTemplate(id);
+        return ResponseEntity.noContent().build();
     }
 }
