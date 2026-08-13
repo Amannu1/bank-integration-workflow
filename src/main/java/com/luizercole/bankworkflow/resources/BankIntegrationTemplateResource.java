@@ -27,8 +27,8 @@ public class BankIntegrationTemplateResource {
 
     @GetMapping("/active/bank/{bankId}")
     public ResponseEntity<BankIntegrationTemplateDTO> findActiveByBankId(@PathVariable Long bankId){
-        BankIntegrationTemplate entity = bankIntegrationTemplateService.findActiveByBankId(bankId);
-        return ResponseEntity.ok(new BankIntegrationTemplateDTO(entity));
+        BankIntegrationTemplateDTO dto = bankIntegrationTemplateService.findActiveByBankId(bankId);
+        return ResponseEntity.ok().body(dto);
     }
 
     @GetMapping("/{id}")

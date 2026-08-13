@@ -34,9 +34,11 @@ public class BankIntegrationTemplateService {
     }
 
     @Transactional(readOnly = true)
-    public BankIntegrationTemplate findActiveByBankId(Long bankId){
-        return bankIntegrationTemplateRepository.findByBankIdAndActiveTrue(bankId)
-                .orElseThrow(() -> new EntityNotFoundException("Active template not found"));
+    public BankIntegrationTemplateDTO findActiveByBankId(Long bankId){
+        Optional<BankIntegrationTemplate> obj = bankIntegrationTemplateRepository.findByBankIdAndActiveTrue(bankId);
+        BankIntegrationTemplate entity = obj.orElseThrow(() -> new EntityNotFoundException("Active template no found."));
+
+        return new BankIntegrationTemplateDTO(entity);
     }
 
     @Transactional(readOnly = true)
