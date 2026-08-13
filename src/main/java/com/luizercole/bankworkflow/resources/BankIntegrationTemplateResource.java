@@ -1,6 +1,7 @@
 package com.luizercole.bankworkflow.resources;
 
 import com.luizercole.bankworkflow.dto.BankIntegrationTemplateDTO;
+import com.luizercole.bankworkflow.entities.BankIntegrationTemplate;
 import com.luizercole.bankworkflow.services.BankIntegrationTemplateService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,12 @@ public class BankIntegrationTemplateResource {
     public ResponseEntity<List<BankIntegrationTemplateDTO>> findAll(){
         List<BankIntegrationTemplateDTO> list = bankIntegrationTemplateService.findAll();
         return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping("/active/bank/{bankId}")
+    public ResponseEntity<BankIntegrationTemplateDTO> findActiveByBankId(@PathVariable Long bankId){
+        BankIntegrationTemplate entity = bankIntegrationTemplateService.findActiveByBankId(bankId);
+        return ResponseEntity.ok(new BankIntegrationTemplateDTO(entity));
     }
 
     @GetMapping("/{id}")
