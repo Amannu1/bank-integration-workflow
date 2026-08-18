@@ -21,7 +21,7 @@ public class BankRepositoryTests {
     void setUp() throws Exception {
         existingId = 1L;
         nonExistingId = 1000L;
-        countTotalBanks = 2L;
+        countTotalBanks = bankRepository.count();
     }
 
     @Autowired

@@ -25,12 +25,14 @@ public class BankServiceIT {
     private BankRepository bankRepository;
 
     private Long existingId;
+    private Long nonDependentId;
     private Long nonExistingId;
     private Long countTotalBanks;
 
     @BeforeEach
     void setUp() throws Exception {
         existingId = 1L;
+        nonDependentId = 3L;
         nonExistingId = 1000L;
         countTotalBanks = bankRepository.count();
     }
@@ -92,9 +94,9 @@ public class BankServiceIT {
     }
 
     @Test
-    public void deleteShouldDeleteRWhenIdExists() {
+    public void deleteShouldDeleteNonDependentBankWhenIdExists() {
 
-        bankService.deleteBank(existingId);
+        bankService.deleteBank(nonDependentId);
 
         Assertions.assertEquals(countTotalBanks - 1, bankRepository.count());
     }

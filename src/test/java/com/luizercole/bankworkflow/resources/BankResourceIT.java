@@ -2,6 +2,7 @@ package com.luizercole.bankworkflow.resources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.luizercole.bankworkflow.dto.BankDTO;
+import com.luizercole.bankworkflow.entities.Bank;
 import com.luizercole.bankworkflow.repositories.BankRepository;
 import com.luizercole.bankworkflow.tests.Factory;
 import com.luizercole.bankworkflow.tests.TokenUtil;
@@ -128,11 +129,13 @@ public class BankResourceIT {
 
     @Test
     public void deleteShouldReturnNoContentWhenIdExists() throws Exception {
-        ResultActions result = mockMvc.perform(delete("/banks/{id}", existingId)
+        Bank bank = bankRepository.save(new Bank(null, "Banco Teste", true));
+
+        ResultActions result = mockMvc.perform(delete("/banks/{id}", bank.getId())
                 .header("Authorization", "Bearer " + bearerToken)
                 .accept(MediaType.APPLICATION_JSON));
 
         result.andExpect(status().isNoContent());
-        Assertions.assertFalse(bankRepository.existsById(existingId));
+        Assertions.assertFalse(bankRepository.existsById(bank.getId()));
     }
 }
