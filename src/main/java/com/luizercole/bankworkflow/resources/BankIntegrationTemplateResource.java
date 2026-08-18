@@ -25,6 +25,12 @@ public class BankIntegrationTemplateResource {
         return ResponseEntity.ok().body(list);
     }
 
+    @GetMapping("/active/bank/{bankId}")
+    public ResponseEntity<BankIntegrationTemplateDTO> findActiveByBankId(@PathVariable Long bankId){
+        BankIntegrationTemplateDTO dto = bankIntegrationTemplateService.findActiveByBankId(bankId);
+        return ResponseEntity.ok().body(dto);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<BankIntegrationTemplateDTO> findById(@PathVariable Long id){
         BankIntegrationTemplateDTO dto = bankIntegrationTemplateService.findById(id);
@@ -37,5 +43,17 @@ public class BankIntegrationTemplateResource {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(bankIntegrationTemplateDTO.getId()).toUri();
         return ResponseEntity.created(uri).body(bankIntegrationTemplateDTO);
 
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<BankIntegrationTemplateDTO> updateBankIntegrationTemplate(@PathVariable Long id, @RequestBody @Valid BankIntegrationTemplateDTO bankIntegrationTemplateDTO){
+        bankIntegrationTemplateDTO = bankIntegrationTemplateService.updateBankIntegrationTemplate(id, bankIntegrationTemplateDTO);
+        return ResponseEntity.ok().body(bankIntegrationTemplateDTO);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<BankIntegrationTemplateDTO> deleteBankIntegrationTemplate(@PathVariable Long id){
+        bankIntegrationTemplateService.deleteBankIntegrationTemplate(id);
+        return ResponseEntity.noContent().build();
     }
 }
